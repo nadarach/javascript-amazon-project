@@ -119,6 +119,39 @@
   margin-left: 3px;
 }
 
+.update-quantity-link, 
+.quantity-label {
+  display: initial;
+}
+
+.quantity-input {
+  width: 30px;
+  border-radius: 3px;
+  display: none;
+}
+
+.save-quantity-link {
+  display: none;
+}
+
+.invalid-quantity-input {
+  border-color: red;
+  border-width: 2px;
+}
+
+.is-editing-quantity {
+  .quantity-input,
+  .save-quantity-link {
+    display: initial;
+  }
+
+  .update-quantity-link,
+  .quantity-label {
+    display : none;
+  }
+  
+}
+
 @media (max-width: 1000px) {
   .delivery-options {
     /* grid-column: 1 means this element will be placed
