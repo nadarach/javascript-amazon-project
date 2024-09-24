@@ -127,11 +127,11 @@ export function renderOrderSummary(){
     } else {
       container.classList.remove('is-editing-quantity');
       quantityInput.classList.remove('invalid-quantity-input');
-      updateQuantity(productId, quantity);
+      updateQuantity(productId, quantity);      
       renderOrderSummary();
       renderPaymentSummary();
-      
-      document.querySelector(`.js-quantity-label-${productId}`).innerHTML = quantity;
+
+      //document.querySelector(`.js-quantity-label-${productId}`).innerHTML = quantity;
       //document.querySelector('.js-return-to-home-link').innerHTML = updateCartQuantity();
     }
   }
@@ -172,9 +172,9 @@ export function renderOrderSummary(){
       deleteFromCart(productId);
 
       const container = document.querySelector(`.js-cart-item-container-${productId}`);
-
       container.remove();
-      document.querySelector('.js-return-to-home-link').innerHTML = updateCartQuantity();
+      renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 
