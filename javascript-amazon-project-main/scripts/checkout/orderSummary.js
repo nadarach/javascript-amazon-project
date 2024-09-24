@@ -1,8 +1,7 @@
 import {cart, deleteFromCart, updateCartQuantity, updateQuantity, updateDeliveryOption} from '../../data/cart.js'
 import {getProduct, products} from '../../data/products.js'
-import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
+import {deliveryOptions, getDeliveryOption, formatDeliveryDate} from '../../data/deliveryOptions.js'
 import { formatCurrency } from '../utils/money.js'; //named export
-import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js' //default export
 import { renderPaymentSummary } from './paymentSummary.js';
 import { renderCheckoutHeader } from './checkoutHeader.js';
 
@@ -72,17 +71,6 @@ export function renderOrderSummary(){
   //Inject the HTML generated for the cart into the checkout page
   document.querySelector('.js-order-summary')
     .innerHTML = cartSummaryHtml;
-
-  //Format the delivery date (Day-of-week, month day-of-month format)
-  function formatDeliveryDate(deliveryOption){
-    const today = dayjs();
-    const deliveryDate = today.add(
-      deliveryOption.deliveryDays, 'days'
-    );
-
-    const dateString = deliveryDate.format('dddd, MMMM D');
-    return dateString;
-}
 
   //Generate the HTML for delivery options of cart items
   function deliveryOptionsHTML(matchingProduct, cartItem) {
