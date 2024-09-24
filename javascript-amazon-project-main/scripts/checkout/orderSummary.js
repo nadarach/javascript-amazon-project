@@ -1,8 +1,9 @@
 import {cart, deleteFromCart, updateCartQuantity, updateQuantity, updateDeliveryOption} from '../../data/cart.js'
-import {products} from '../../data/products.js'
-import {deliveryOptions} from '../../data/deliveryOptions.js'
+import {getProduct, products} from '../../data/products.js'
+import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
 import { formatCurrency } from '../utils/money.js'; //named export
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js' //default export
+import { renderPaymentSummary } from './paymentSummary.js';
 
 export function renderOrderSummary(){
 
@@ -11,28 +12,12 @@ export function renderOrderSummary(){
   document.querySelector('.js-return-to-home-link')
     .innerHTML = `${updateCartQuantity()} items`;
 
-
   cart.forEach(cartItem => {
     const productId = cartItem.productId;
-    let matchingProduct;
-
-    //looping through the products array to retrieve the matching product from the cart
-    products.forEach(product => {
-      if (product.id === productId) 
-        {
-          matchingProduct = product;
-        }
-    });
+    const matchingProduct = getProduct(productId);
 
     const deliveryOptionId = cartItem.deliveryOptionId;
-    let deliveryOption; 
-
-    //looping through the delivery options to retrieve the option associated with the item in the cart
-    deliveryOptions.forEach(option => {
-      if (option.id === deliveryOptionId) {
-        deliveryOption = option;
-      }
-    });
+    let deliveryOption = getDeliveryOption(deliveryOptionId); 
 
     //formatting the date to display it
     const dateString = formatDeliveryDate(deliveryOption);
@@ -102,7 +87,6 @@ export function renderOrderSummary(){
   function deliveryOptionsHTML(matchingProduct, cartItem) {
     let html = '';
     deliveryOptions.forEach(deliveryOption => {
-
       const dateString = formatDeliveryDate(deliveryOption);
       const priceString = deliveryOption.priceCents === 0
       ? 'FREE Shipping' 
@@ -144,10 +128,14 @@ export function renderOrderSummary(){
       container.classList.remove('is-editing-quantity');
       quantityInput.classList.remove('invalid-quantity-input');
       updateQuantity(productId, quantity);
+      renderOrderSummary();
+      renderPaymentSummary();
+      
       document.querySelector(`.js-quantity-label-${productId}`).innerHTML = quantity;
-      document.querySelector('.js-return-to-home-link').innerHTML = updateCartQuantity();
+      //document.querySelector('.js-return-to-home-link').innerHTML = updateCartQuantity();
     }
   }
+
 
   //Handling update buttons for each cart item (for updating items' quantities)
   document.querySelectorAll('.js-update-quantity-link').forEach(link => {
@@ -197,7 +185,7 @@ export function renderOrderSummary(){
 
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
-
+      renderPaymentSummary();
       /*
       deliveryOptions.forEach(option => {
         if (option.id === deliveryOptionId) {

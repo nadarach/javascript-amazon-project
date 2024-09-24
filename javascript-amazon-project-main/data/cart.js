@@ -59,11 +59,9 @@ export function deleteFromCart(productId){
 
 export function updateCartQuantity(){
   let cartQuantity = 0;
-
   cart.forEach(cartItem => {
     //cartQuantity += cartItem.productQuantity;
     cartQuantity += cartItem.quantity;
-
   });
 
   return cartQuantity;
