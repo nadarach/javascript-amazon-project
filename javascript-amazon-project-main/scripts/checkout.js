@@ -38,7 +38,7 @@ cart.forEach(cartItem => {
   //generate the HTML for all the items in the cart (one at a time, and we concatenate them in one var.) in Checkout page
   cartSummaryHtml += `
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
-      <div class="delivery-date">
+      <div class="delivery-date js-delivery-date">
         Delivery date: ${dateString}
       </div>
 
@@ -190,7 +190,28 @@ document.querySelectorAll('.js-delete-quantity-link').forEach(link => {
 
 document.querySelectorAll('.js-delivery-option').forEach(element => {
   element.addEventListener('click', () => {
+    let deliveryOption;
     const {productId, deliveryOptionId} = element.dataset;
+
     updateDeliveryOption(productId, deliveryOptionId);
+    deliveryOptions.forEach(option => {
+      if (option.id === deliveryOptionId) {
+        deliveryOption = option;
+      }
+    });
+    const dateString = formatDeliveryDate(deliveryOption);
+
+    document.querySelector('.js-delivery-date').innerHTML = `Delivery date: ${dateString}`;
+
   });
 });
+
+/*
+function findDeliveryOption(deliveryOptionId){
+  deliveryOptions.forEach(option => {
+    if (option.id === deliveryOptionId) {
+      deliveryOption = option;
+    }
+  });
+}
+  */
