@@ -1,6 +1,6 @@
 import {cart, deleteFromCart, updateCartQuantity, updateQuantity, updateDeliveryOption} from '../../data/cart.js'
 import {getProduct, products} from '../../data/products.js'
-import {deliveryOptions, getDeliveryOption, formatDeliveryDate} from '../../data/deliveryOptions.js'
+import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js'
 import { formatCurrency } from '../utils/money.js'; //named export
 import { renderPaymentSummary } from './paymentSummary.js';
 import { renderCheckoutHeader } from './checkoutHeader.js';
@@ -20,7 +20,7 @@ export function renderOrderSummary(){
     let deliveryOption = getDeliveryOption(deliveryOptionId); 
 
     //formatting the date to display it
-    const dateString = formatDeliveryDate(deliveryOption);
+    const dateString = calculateDeliveryDate(deliveryOption);
 
     //generate the HTML for all the items in the cart (one at a time, and we concatenate them in one var.) in Checkout page
     cartSummaryHtml += `
@@ -76,7 +76,7 @@ export function renderOrderSummary(){
   function deliveryOptionsHTML(matchingProduct, cartItem) {
     let html = '';
     deliveryOptions.forEach(deliveryOption => {
-      const dateString = formatDeliveryDate(deliveryOption);
+      const dateString = calculateDeliveryDate(deliveryOption);
       const priceString = deliveryOption.priceCents === 0
       ? 'FREE Shipping' 
       : `$${formatCurrency(deliveryOption.priceCents)}`;
@@ -183,7 +183,7 @@ export function renderOrderSummary(){
           deliveryOption = option;
         }
       });
-      const dateString = formatDeliveryDate(deliveryOption);
+      const dateString = calculateDeliveryDate(deliveryOption);
 
       document.querySelector('.js-delivery-date').innerHTML = `Delivery date: ${dateString}`;
       */
