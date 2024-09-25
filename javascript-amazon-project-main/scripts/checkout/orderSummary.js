@@ -38,7 +38,7 @@ export function renderOrderSummary(){
             ${matchingProduct.name}
             </div>
             <div class="product-price">
-            ${formatCurrency(matchingProduct.priceCents)}
+            $${formatCurrency(matchingProduct.priceCents)}
             </div>
             <div class="product-quantity">
               <span>
@@ -109,9 +109,9 @@ export function renderOrderSummary(){
     const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
     const quantity = Number(quantityInput.value);
     
-    if (quantity < 0 || quantity > 1000) {
+    if (quantity <= 0 || quantity > 1000) {
       quantityInput.classList.add('invalid-quantity-input');
-      alert('Quantity must be at least 0 and less than 1000');
+      alert('Quantity must be at least 1 and less than 1000');
       return;
     } else {
       container.classList.remove('is-editing-quantity');
