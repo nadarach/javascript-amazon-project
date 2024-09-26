@@ -1,5 +1,5 @@
 import {renderOrderSummary} from '../../scripts/checkout/orderSummary.js'
-import { loadFromStorage } from '../../data/cart.js';
+import { loadFromStorage, cart } from '../../data/cart.js';
 import { renderCheckoutHeader } from '../../scripts/checkout/checkoutHeader.js';
 
 //Integration test: testing many units/pieces of code working together (e.g. renderOrderSummary)
@@ -41,6 +41,10 @@ describe('Test suite : renderOrderSummary', () =>{
     renderOrderSummary();
   });
 
+  afterEach(() => {
+    document.querySelector('.js-test-container').innerHTML = ``;
+  });
+
   it('displays the cart', () => {
 
     //test whether we are displaying 2 cart item containers (for the 2 items in the cart) correctly
@@ -48,12 +52,15 @@ describe('Test suite : renderOrderSummary', () =>{
       document.querySelectorAll('.js-cart-item-container').length
     ).toEqual(2);
 
-    //test whether we are displaying the quantity (2) of the item with the id = productId (i.e. the 1st item in the cart) correctly on the page 
+    //test whether we are displaying the quantity (2) of the item with the id = productId1 (i.e. the 1st item in the cart) correctly on the page 
     expect(
       document.querySelector(`.js-product-quantity-${productId1}`).innerText
     ).toContain('Quantity: 2');
 
-    document.querySelector('.js-test-container').innerHTML = ``;
+    //test whether we are displaying the name of the item with the id = productId1 (i.e. the 1st item in the cart) correctly on the page 
+    expect(
+      document.querySelector(`.js-product-name-${productId1}`).innerText
+    ).toContain('Black and Gray Athletic Cotton Socks - 6 Pairs');
 
   });
 
@@ -75,9 +82,28 @@ describe('Test suite : renderOrderSummary', () =>{
     expect(
       document.querySelector(`.js-cart-item-container-${productId2}`)
     ).not.toEqual(null);
+  });
 
-    document.querySelector('.js-test-container').innerHTML = ``;
+  it('updates the delivery option', () => {
+    
+    document.querySelector(`.js-delivery-option-${productId1}-3`).click();
+    
+    const inputElement = document.querySelector(`.js-delivery-option-input-${productId1}-3`);
 
+    //checks whether the input for the 3rd delivery option for the 1st product in the cart is checked after the update
+    expect(inputElement.checked).toEqual(true);
+
+    //checks whether there are still 2 items in the cart
+    expect(cart.length).toEqual(2);
+
+    //checks whether the product ID of the 1st item in the cart corresponds to productId1
+    expect(cart[0].productId).toEqual(productId1);
+
+    //checks whether the delivery option ID of the 1st item has been updated to 3
+    expect(cart[0].deliveryOptionId).toEqual('3');
+
+    //checks whether the total price for the items in the cart is $63.50 after the update
+    expect(document.querySelector('.js-payment-summary-total').innerHTML).toEqual('$63.50');
   });
 
 });
