@@ -141,7 +141,6 @@ describe('Test suite: deleteFromCart', () => {
 });
 
 describe('Test suite: updateDeliveryOption', () => {
-
   beforeEach(() => {
     spyOn(localStorage, 'setItem');
 
@@ -190,6 +189,25 @@ describe('Test suite: updateDeliveryOption', () => {
 
     //this test checks whether the setItem function hasn't been called in this case
     expect(localStorage.setItem).toHaveBeenCalledTimes(0);
-
   });
+
+  it('updates with a deliveryOptionId that does not exist', () => {
+    loadFromStorage();
+    updateDeliveryOption(productId1, '5');
+
+    //checks whether there are still 2 items in the cart
+    expect(cart.length).toEqual(2);
+
+    //checks whether the product ID of the 1st item in the cart corresponds to productId1
+    expect(cart[0].productId).toEqual(productId1);
+
+    //checks whether the delivery option ID of the 1st item is still 1
+    expect(cart[0].deliveryOptionId).toEqual('1');
+
+    //If there's no product in the cart with the product ID given to it, the updateDeliveryOption neither updates the cart and nor saves to storage i.e. the setItem function shouldn't be called
+
+    //this test checks whether the setItem function hasn't been called in this case
+    expect(localStorage.setItem).toHaveBeenCalledTimes(0);
+  });
+
 });

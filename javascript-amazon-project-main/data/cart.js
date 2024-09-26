@@ -9,6 +9,8 @@
 
 }];*/
 
+import { checkDeliveryOption } from "./deliveryOptions.js";
+
 export let cart;
 
 export function loadFromStorage(){
@@ -101,13 +103,17 @@ export function updateQuantity(productId, newQuantity){
 export function updateDeliveryOption(productId, deliveryOptionId){
   let matchingItem = null;
 
+  if(!checkDeliveryOption(deliveryOptionId)) {
+    return;
+  }
+
   cart.forEach(cartItem => {
     if (productId === cartItem.productId){
       matchingItem = cartItem;
     }
   });
 
-  if (matchingItem === null) {
+  if (!matchingItem) {
     return;
   }
 

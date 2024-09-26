@@ -28,6 +28,17 @@ export function getDeliveryOption(deliveryOptionId){
   return deliveryOption;
 }
 
+export function checkDeliveryOption(deliveryOptionId){
+  let deliveryOption = null; 
+
+  deliveryOptions.forEach(option => {
+    if (option.id === deliveryOptionId) {
+      deliveryOption = option;
+    }
+  });
+  return deliveryOption;
+}
+
 //Calculate the delivery date and format it (Day-of-week, month day-of-month format) 
 export function calculateDeliveryDate(deliveryOption){
   let deliveryDays = deliveryOption.deliveryDays;
