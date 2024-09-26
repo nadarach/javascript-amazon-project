@@ -2,15 +2,15 @@ import { checkDeliveryOption } from "./deliveryOptions.js";
 
 class Cart {
   cartItems;
-  localStorageKey;
+  #localStorageKey;
 
   constructor(localStorageKey) {
-    this.localStorageKey = localStorageKey;
-    this.loadFromStorage();
+    this.#localStorageKey = localStorageKey;
+    this.#loadFromStorage();
   }
 
-  loadFromStorage() {
-    this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey)) || [{
+  #loadFromStorage() {
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [{
       productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
       quantity: 2,
       deliveryOptionId: '1'
@@ -22,7 +22,7 @@ class Cart {
   }
 
   saveToStorage(){
-    localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
   }
 
   addToCart(productId, productQuantity){
@@ -116,11 +116,6 @@ class Cart {
 
 const cart = new Cart('cart');
 const businessCart = new Cart('cart-business');
-
-cart.localStorageKey = 'cart';
-businessCart.localStorageKey = 'cart-business';
-
-cart.loadFromStorage();
 
 console.log(cart);
 console.log(businessCart);
